@@ -115,7 +115,7 @@ export class Transaction {
     }
 
     tx.locktime = bufferReader.readUInt32();
-
+    if (tx.version >= 2) { tx.floData = bufferReader.readVarSlice() }
     if (_NO_STRICT) return tx;
     if (bufferReader.offset !== buffer.length)
       throw new Error('Transaction has unexpected data');
@@ -139,6 +139,7 @@ export class Transaction {
   locktime: number = 0;
   ins: Input[] = [];
   outs: Output[] = [];
+  floData: Buffer = Buffer.allocUnsafe(0);
 
   isCoinbase(): boolean {
     return (
@@ -211,6 +212,7 @@ export class Transaction {
 
     return (
       (hasWitnesses ? 10 : 8) +
+      (this.version >= 2 ? varSliceSize(this.floData) : 0) +
       varuint.encodingLength(this.ins.length) +
       varuint.encodingLength(this.outs.length) +
       this.ins.reduce((sum, input) => {
@@ -231,6 +233,7 @@ export class Transaction {
     const newTx = new Transaction();
     newTx.version = this.version;
     newTx.locktime = this.locktime;
+    newTx.floData = this.floData
 
     newTx.ins = this.ins.map(txIn => {
       return {
@@ -426,6 +429,7 @@ export class Transaction {
     bufferWriter.writeUInt32(input.sequence);
     bufferWriter.writeSlice(hashOutputs);
     bufferWriter.writeUInt32(this.locktime);
+    if (this.version >= 2) { bufferWriter.writeVarSlice(this.floData) }
     bufferWriter.writeUInt32(hashType);
     return bcrypto.hash256(tbuffer);
   }
@@ -507,6 +511,7 @@ export class Transaction {
     }
 
     bufferWriter.writeUInt32(this.locktime);
+    if (this.version >= 2) { bufferWriter.writeVarSlice(this.floData) }
 
     // avoid slicing unless necessary
     if (initialOffset !== undefined)

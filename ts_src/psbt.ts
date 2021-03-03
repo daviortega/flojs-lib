@@ -172,6 +172,14 @@ export class Psbt {
     this.setLocktime(locktime);
   }
 
+  set floData (flodata: Buffer) {
+    // check32Bit(locktime);
+    checkInputsForPartialSig(this.data.inputs, 'setFloData')
+    const c = this.__CACHE
+    c.__TX.floData = flodata
+    c.__EXTRACTED_TX = undefined
+  }
+
   get txInputs(): PsbtTxInput[] {
     return this.__CACHE.__TX.ins.map(input => ({
       hash: cloneBuffer(input.hash),

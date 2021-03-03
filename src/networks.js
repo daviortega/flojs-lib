@@ -33,3 +33,14 @@ exports.testnet = {
   scriptHash: 0xc4,
   wif: 0xef,
 };
+exports.flo = {
+  messagePrefix: '\x18FLO Signed Message:\n',
+  bech32: 'flo',
+  bip32: {
+    public: 0x0134406b,
+    private: 0x01343c31,
+  },
+  pubKeyHash: 35,
+  scriptHash: 94,
+  wif: 163,
+};
