@@ -61,6 +61,7 @@ export declare class Psbt {
     readonly inputCount: number;
     version: number;
     locktime: number;
+    floData: Buffer;
     readonly txInputs: PsbtTxInput[];
     readonly txOutputs: PsbtTxOutput[];
     combine(...those: Psbt[]): this;

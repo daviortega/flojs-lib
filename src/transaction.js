@@ -44,6 +44,7 @@ class Transaction {
     this.locktime = 0;
     this.ins = [];
     this.outs = [];
+    this.floData = Buffer.allocUnsafe(0);
   }
   static fromBuffer(buffer, _NO_STRICT) {
     const bufferReader = new bufferutils_1.BufferReader(buffer);
@@ -86,6 +87,9 @@ class Transaction {
         throw new Error('Transaction has superfluous witness data');
     }
     tx.locktime = bufferReader.readUInt32();
+    if (tx.version >= 2) {
+      tx.floData = bufferReader.readVarSlice();
+    }
     if (_NO_STRICT) return tx;
     if (bufferReader.offset !== buffer.length)
       throw new Error('Transaction has unexpected data');
@@ -157,6 +161,7 @@ class Transaction {
     const hasWitnesses = _ALLOW_WITNESS && this.hasWitnesses();
     return (
       (hasWitnesses ? 10 : 8) +
+      (this.version >= 2 ? varSliceSize(this.floData) : 0) +
       varuint.encodingLength(this.ins.length) +
       varuint.encodingLength(this.outs.length) +
       this.ins.reduce((sum, input) => {
@@ -176,6 +181,7 @@ class Transaction {
     const newTx = new Transaction();
     newTx.version = this.version;
     newTx.locktime = this.locktime;
+    newTx.floData = this.floData;
     newTx.ins = this.ins.map(txIn => {
       return {
         hash: txIn.hash,
@@ -326,6 +332,9 @@ class Transaction {
     bufferWriter.writeUInt32(input.sequence);
     bufferWriter.writeSlice(hashOutputs);
     bufferWriter.writeUInt32(this.locktime);
+    if (this.version >= 2) {
+      bufferWriter.writeVarSlice(this.floData);
+    }
     bufferWriter.writeUInt32(hashType);
     return bcrypto.hash256(tbuffer);
   }
@@ -386,6 +395,9 @@ class Transaction {
       });
     }
     bufferWriter.writeUInt32(this.locktime);
+    if (this.version >= 2) {
+      bufferWriter.writeVarSlice(this.floData);
+    }
     // avoid slicing unless necessary
     if (initialOffset !== undefined)
       return buffer.slice(initialOffset, bufferWriter.offset);
