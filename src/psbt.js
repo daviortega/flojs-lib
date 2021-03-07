@@ -118,11 +118,7 @@ class Psbt {
     this.setLocktime(locktime);
   }
   set floData(flodata) {
-    // check32Bit(locktime);
-    checkInputsForPartialSig(this.data.inputs, 'setFloData');
-    const c = this.__CACHE;
-    c.__TX.floData = flodata;
-    c.__EXTRACTED_TX = undefined;
+    this.setFloData(flodata);
   }
   get txInputs() {
     return this.__CACHE.__TX.ins.map(input => ({
@@ -171,6 +167,14 @@ class Psbt {
     checkInputsForPartialSig(this.data.inputs, 'setLocktime');
     const c = this.__CACHE;
     c.__TX.locktime = locktime;
+    c.__EXTRACTED_TX = undefined;
+    return this;
+  }
+  setFloData(flodata) {
+    // check32Bit(locktime);
+    checkInputsForPartialSig(this.data.inputs, 'setFloData');
+    const c = this.__CACHE;
+    c.__TX.floData = flodata;
     c.__EXTRACTED_TX = undefined;
     return this;
   }
