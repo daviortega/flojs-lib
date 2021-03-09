@@ -171,15 +171,6 @@ class Psbt {
     c.__EXTRACTED_TX = undefined;
     return this;
   }
-  /*
-    setFloData(flodata: Buffer): this {
-      // check32Bit(locktime);
-      checkInputsForPartialSig(this.data.inputs, 'setFloData')
-      const c = this.__CACHE
-      c.__TX.floData = flodata
-      c.__EXTRACTED_TX = undefined
-      return this;
-    }*/
   setInputSequence(inputIndex, sequence) {
     check32Bit(sequence);
     checkInputsForPartialSig(this.data.inputs, 'setInputSequence');

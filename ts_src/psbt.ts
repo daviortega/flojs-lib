@@ -112,8 +112,8 @@ export class Psbt {
     return psbt;
   }
 
-  private __CACHE: PsbtCache;
-  private opts: PsbtOpts;
+  protected __CACHE: PsbtCache;
+  protected opts: PsbtOpts;
 
   constructor(
     opts: PsbtOptsOptional = {},
@@ -232,16 +232,6 @@ export class Psbt {
     c.__EXTRACTED_TX = undefined;
     return this;
   }
-
-  /*
-  setFloData(flodata: Buffer): this {
-    // check32Bit(locktime);
-    checkInputsForPartialSig(this.data.inputs, 'setFloData')
-    const c = this.__CACHE
-    c.__TX.floData = flodata
-    c.__EXTRACTED_TX = undefined
-    return this;
-  }*/
  
   setInputSequence(inputIndex: number, sequence: number): this {
     check32Bit(sequence);

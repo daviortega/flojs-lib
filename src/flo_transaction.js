@@ -68,7 +68,7 @@ class FLOTransaction extends transaction_1.Transaction {
         throw new Error('Transaction has superfluous witness data');
     }
     tx.locktime = bufferReader.readUInt32();
-    if (tx.version >= 2) {
+    if (tx.version >= 2 && bufferReader.offset !== buffer.length) {
       tx.floData = bufferReader.readVarSlice();
     }
     if (_NO_STRICT) return tx;

@@ -83,7 +83,7 @@ class FLOTransaction extends Transaction {
         }
     
         tx.locktime = bufferReader.readUInt32();
-        if (tx.version >= 2) { 
+        if (tx.version >= 2 && bufferReader.offset !== buffer.length) { 
             tx.floData = bufferReader.readVarSlice() 
         }
     

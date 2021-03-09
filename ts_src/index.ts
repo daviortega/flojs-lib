@@ -10,6 +10,7 @@ export { ECPair, address, bip32, crypto, networks, payments, script };
 
 export { Block } from './block';
 export { Psbt, PsbtTxInput, PsbtTxOutput } from './psbt';
+export { FLOPsbt } from './flo_psbt'
 export { OPS as opcodes } from './script';
 export { Transaction } from './transaction';
 export { FLOTransaction } from './flo_transaction'

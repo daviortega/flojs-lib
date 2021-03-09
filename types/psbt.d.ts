@@ -55,8 +55,8 @@ export declare class Psbt {
     static fromBase64(data: string, opts?: PsbtOptsOptional): Psbt;
     static fromHex(data: string, opts?: PsbtOptsOptional): Psbt;
     static fromBuffer(buffer: Buffer, opts?: PsbtOptsOptional): Psbt;
-    private __CACHE;
-    private opts;
+    protected __CACHE: PsbtCache;
+    protected opts: PsbtOpts;
     constructor(opts?: PsbtOptsOptional, data?: PsbtBase);
     readonly inputCount: number;
     version: number;
@@ -104,9 +104,25 @@ export declare class Psbt {
     addUnknownKeyValToOutput(outputIndex: number, keyVal: KeyValue): this;
     clearFinalizedInput(inputIndex: number): this;
 }
+interface PsbtCache {
+    __NON_WITNESS_UTXO_TX_CACHE: Transaction[];
+    __NON_WITNESS_UTXO_BUF_CACHE: Buffer[];
+    __TX_IN_CACHE: {
+        [index: string]: number;
+    };
+    __TX: Transaction;
+    __FEE_RATE?: number;
+    __FEE?: number;
+    __EXTRACTED_TX?: Transaction;
+    __UNSAFE_SIGN_NONSEGWIT: boolean;
+}
 interface PsbtOptsOptional {
     network?: Network;
     maximumFeeRate?: number;
+}
+interface PsbtOpts {
+    network: Network;
+    maximumFeeRate: number;
 }
 interface PsbtInputExtended extends PsbtInput, TransactionInput {
 }
