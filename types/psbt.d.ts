@@ -61,7 +61,6 @@ export declare class Psbt {
     readonly inputCount: number;
     version: number;
     locktime: number;
-    floData: Buffer;
     readonly txInputs: PsbtTxInput[];
     readonly txOutputs: PsbtTxOutput[];
     combine(...those: Psbt[]): this;
@@ -69,7 +68,6 @@ export declare class Psbt {
     setMaximumFeeRate(satoshiPerByte: number): void;
     setVersion(version: number): this;
     setLocktime(locktime: number): this;
-    setFloData(flodata: Buffer): this;
     setInputSequence(inputIndex: number, sequence: number): this;
     addInputs(inputDatas: PsbtInputExtended[]): this;
     addInput(inputData: PsbtInputExtended): this;

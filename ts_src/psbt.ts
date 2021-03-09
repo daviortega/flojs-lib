@@ -171,10 +171,10 @@ export class Psbt {
   set locktime(locktime: number) {
     this.setLocktime(locktime);
   }
-
+  /*
   set floData (flodata: Buffer) {
     this.setFloData(flodata);
-  }
+  } */
 
   get txInputs(): PsbtTxInput[] {
     return this.__CACHE.__TX.ins.map(input => ({
@@ -233,6 +233,7 @@ export class Psbt {
     return this;
   }
 
+  /*
   setFloData(flodata: Buffer): this {
     // check32Bit(locktime);
     checkInputsForPartialSig(this.data.inputs, 'setFloData')
@@ -240,7 +241,7 @@ export class Psbt {
     c.__TX.floData = flodata
     c.__EXTRACTED_TX = undefined
     return this;
-  }
+  }*/
  
   setInputSequence(inputIndex: number, sequence: number): this {
     check32Bit(sequence);

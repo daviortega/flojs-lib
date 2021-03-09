@@ -8,8 +8,8 @@ const regtest = regtestUtils.network;
 
 // See bottom of file for some helper functions used to make the payment objects needed.
 
-describe('bitcoinjs-lib (transactions with psbt)', () => {
-  it('can create a 1-to-1 Transaction', () => {
+describe.only('bitcoinjs-lib (transactions with psbt)', () => {
+  it.only('can create a 1-to-1 Transaction', () => {
     const alice = bitcoin.ECPair.fromWIF(
       'L2uPYXe17xSTqbCjZvL2DsyXPCbXspvcu5mHLDYUgzdUbZGSKrSr',
     );
